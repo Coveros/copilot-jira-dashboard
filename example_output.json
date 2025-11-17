@@ -1,0 +1,59 @@
+{
+  "username": "johndoe",
+  "jira_username": "john.doe@example.com",
+  "analysis_date": "2024-11-17 13:30:00",
+  "copilot_rollout_date": "2024-01-01",
+  "copilot_engagement": {
+    "username": "johndoe",
+    "period_start": "2024-01-01",
+    "period_end": "2024-03-31",
+    "active_days": 62,
+    "total_suggestions": 5420,
+    "total_acceptances": 3897,
+    "total_lines_suggested": 18650,
+    "total_lines_accepted": 14230,
+    "acceptance_rate": 71.9,
+    "avg_suggestions_per_day": 87.4,
+    "languages_used": ["Python", "JavaScript", "TypeScript", "Go"],
+    "seat_created_at": "2023-12-15T00:00:00Z",
+    "last_activity_at": "2024-03-30T15:22:00Z"
+  },
+  "jira_productivity": {
+    "username": "john.doe@example.com",
+    "pre_period": {
+      "start": "2023-10-03",
+      "end": "2023-12-31",
+      "sprints": 6,
+      "avg_story_points_per_sprint": 18.5,
+      "avg_issues_per_sprint": 8.2,
+      "total_story_points": 111,
+      "total_issues": 49
+    },
+    "post_period": {
+      "start": "2024-01-01",
+      "end": "2024-03-31",
+      "sprints": 6,
+      "avg_story_points_per_sprint": 24.8,
+      "avg_issues_per_sprint": 10.5,
+      "total_story_points": 149,
+      "total_issues": 63
+    },
+    "improvement": {
+      "story_points_percent": 34.05,
+      "issues_percent": 28.05
+    }
+  },
+  "correlation": {
+    "engagement_score": 77.56,
+    "productivity_improvement_percent": 34.05,
+    "high_engagement": true,
+    "significant_improvement": true,
+    "positive_correlation": true
+  },
+  "insights": [
+    "High Copilot acceptance rate (71.9%) indicates strong tool adoption and relevant suggestions.",
+    "Consistent Copilot usage (62 active days) shows regular integration into workflow.",
+    "Significant productivity increase: 34.1% improvement in story points per sprint (from 18.5 to 24.8).",
+    "Strong correlation observed: High Copilot engagement corresponds with significant productivity improvement."
+  ]
+}

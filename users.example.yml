@@ -1,0 +1,16 @@
+# Example user mappings file
+# Maps GitHub usernames to Jira usernames for team analysis
+
+users:
+  - github_username: "johndoe"
+    jira_username: "john.doe@example.com"
+  
+  - github_username: "janedoe"
+    jira_username: "jane.doe@example.com"
+  
+  - github_username: "bobsmith"
+    jira_username: "bob.smith@example.com"
+  
+  # If GitHub and Jira usernames are the same, you can omit jira_username
+  - github_username: "alicejones"
+    jira_username: "alicejones"

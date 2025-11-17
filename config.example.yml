@@ -1,0 +1,37 @@
+# Configuration for GitHub Copilot and Jira Dashboard
+# Copy this file to config.yml and fill in your actual values
+
+github:
+  # GitHub Personal Access Token with copilot:read scope
+  token: "your_github_token_here"
+  # Organization or Enterprise name
+  organization: "your_org_name"
+  # Optional: specific team slugs to filter users
+  teams: []
+
+jira:
+  # Jira server URL
+  url: "https://your-instance.atlassian.net"
+  # Jira email
+  email: "your_email@example.com"
+  # Jira API token
+  token: "your_jira_token_here"
+  # Project key(s) to analyze
+  projects:
+    - "PROJ"
+
+analysis:
+  # Date when Copilot was rolled out (YYYY-MM-DD)
+  copilot_rollout_date: "2024-01-01"
+  # Number of days before rollout to analyze
+  pre_period_days: 90
+  # Number of days after rollout to analyze
+  post_period_days: 90
+  # Minimum number of sprints for meaningful analysis
+  min_sprints: 3
+
+output:
+  # Directory for generated reports
+  reports_dir: "./reports"
+  # Directory for generated visualizations
+  charts_dir: "./reports/charts"
