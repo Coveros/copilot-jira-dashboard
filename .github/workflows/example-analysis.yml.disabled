@@ -1,0 +1,110 @@
+# Example GitHub Actions workflow for automated dashboard generation
+# Rename this file to remove .disabled suffix to enable
+# Make sure to set up the required secrets in your repository settings
+
+name: Generate Copilot-Jira Dashboard
+
+on:
+  # Run on a schedule (e.g., weekly on Monday at 9 AM)
+  schedule:
+    - cron: '0 9 * * 1'
+  
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  generate-dashboard:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install -e .
+      
+      - name: Create configuration file
+        run: |
+          cat > config.yml << EOF
+          github:
+            token: "${{ secrets.GITHUB_COPILOT_TOKEN }}"
+            organization: "${{ secrets.GITHUB_ORG }}"
+          
+          jira:
+            url: "${{ secrets.JIRA_URL }}"
+            email: "${{ secrets.JIRA_EMAIL }}"
+            token: "${{ secrets.JIRA_TOKEN }}"
+            projects:
+              - "${{ secrets.JIRA_PROJECT }}"
+          
+          analysis:
+            copilot_rollout_date: "2024-01-01"
+            pre_period_days: 90
+            post_period_days: 90
+          
+          output:
+            reports_dir: "./reports"
+            charts_dir: "./reports/charts"
+          EOF
+      
+      - name: Create users file
+        run: |
+          cat > users.yml << EOF
+          users:
+            - github_username: "user1"
+              jira_username: "user1@company.com"
+            - github_username: "user2"
+              jira_username: "user2@company.com"
+          EOF
+      
+      - name: Test API connections
+        run: |
+          copilot-jira-dashboard test --config config.yml
+      
+      - name: Generate team dashboard
+        run: |
+          copilot-jira-dashboard analyze-team \
+            --users-file users.yml \
+            --config config.yml \
+            --verbose
+      
+      - name: Upload reports as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: productivity-reports
+          path: reports/
+          retention-days: 90
+      
+      # Optional: Upload to a GitHub Pages branch
+      # - name: Deploy to GitHub Pages
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./reports
+      #     destination_dir: productivity-dashboard
+      
+      # Optional: Send notification to Slack
+      # - name: Send Slack notification
+      #   if: success()
+      #   uses: slackapi/slack-github-action@v1
+      #   with:
+      #     webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+      #     payload: |
+      #       {
+      #         "text": "📊 Productivity dashboard has been updated!"
+      #       }
+
+# Required Secrets:
+# - GITHUB_COPILOT_TOKEN: GitHub PAT with copilot:read scope
+# - GITHUB_ORG: Your GitHub organization name
+# - JIRA_URL: Your Jira instance URL
+# - JIRA_EMAIL: Jira user email
+# - JIRA_TOKEN: Jira API token
+# - JIRA_PROJECT: Jira project key
+# - SLACK_WEBHOOK (optional): For notifications
