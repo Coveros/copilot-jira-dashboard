@@ -48,7 +48,7 @@ npm run preview
 
 ## Tech Stack
 
-- React 18 + TypeScript
+- React 19 + TypeScript
 - Vite (build tool)
 - Recharts (visualizations)
 - date-fns (date handling)

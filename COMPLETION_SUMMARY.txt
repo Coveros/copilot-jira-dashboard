@@ -52,10 +52,10 @@ DOCUMENTATION:
 TECHNOLOGIES USED
 ================================================================================
 
-- React 18.3.1
-- TypeScript 5.6
-- Vite 7.2.7
-- Recharts 2.15.0 (data visualization)
+- React 19.2.0
+- TypeScript 5.9.3
+- Vite 7.2.4
+- Recharts 3.5.1 (data visualization)
 - date-fns 4.1.0 (date handling)
 
 ================================================================================

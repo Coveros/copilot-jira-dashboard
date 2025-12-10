@@ -2,7 +2,7 @@
 
 An interactive dashboard that demonstrates developer productivity improvements by combining **GitHub Copilot metrics** with **Jira story point data**. This application visualizes the correlation between Copilot adoption and increased developer velocity.
 
-![Dashboard Preview](https://img.shields.io/badge/React-18.3-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue) ![Vite](https://img.shields.io/badge/Vite-6.0-purple)
+![Dashboard Preview](https://img.shields.io/badge/React-19.2-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue) ![Vite](https://img.shields.io/badge/Vite-7.2-purple)
 
 ## 📊 Features
 
@@ -15,7 +15,7 @@ An interactive dashboard that demonstrates developer productivity improvements b
 
 ## 🛠️ Technology Stack
 
-- **React 18** - UI framework
+- **React 19** - UI framework
 - **TypeScript** - Type safety
 - **Vite** - Build tool and dev server
 - **Recharts** - Data visualization
