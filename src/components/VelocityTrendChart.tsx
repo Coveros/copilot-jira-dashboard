@@ -9,9 +9,11 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { getVelocityTrend } from '../utils/analytics';
+import { useSprintData } from '../contexts/DataContext';
 
 const VelocityTrendChart = () => {
-  const data = getVelocityTrend();
+  const { sprintData } = useSprintData();
+  const data = getVelocityTrend(sprintData);
 
   return (
     <div

@@ -1,7 +1,9 @@
 import { getDeveloperComparison } from '../utils/analytics';
+import { useSprintData } from '../contexts/DataContext';
 
 const DeveloperTable = () => {
-  const data = getDeveloperComparison();
+  const { sprintData } = useSprintData();
+  const data = getDeveloperComparison(sprintData);
 
   return (
     <div
