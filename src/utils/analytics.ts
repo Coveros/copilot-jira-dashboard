@@ -1,11 +1,11 @@
 import { mockDeveloperCopilotMetrics } from '../data/mockCopilotData';
 import { mockSprintData } from '../data/mockJiraData';
-import type { ProductivityMetrics, DashboardSummary } from '../types';
+import type { ProductivityMetrics, DashboardSummary, SprintData } from '../types';
 
-export const getCombinedProductivityMetrics = (): ProductivityMetrics[] => {
+export const getCombinedProductivityMetrics = (sprintData: SprintData[] = mockSprintData): ProductivityMetrics[] => {
   const metrics: ProductivityMetrics[] = [];
 
-  mockSprintData.forEach((sprint) => {
+  sprintData.forEach((sprint) => {
     sprint.developers.forEach((dev) => {
       // Find corresponding Copilot metrics
       const copilotData = mockDeveloperCopilotMetrics.find(
@@ -27,10 +27,10 @@ export const getCombinedProductivityMetrics = (): ProductivityMetrics[] => {
   return metrics;
 };
 
-export const getDashboardSummary = (): DashboardSummary => {
-  const allMetrics = getCombinedProductivityMetrics();
-  const latestSprint = mockSprintData[mockSprintData.length - 1];
-  const firstSprint = mockSprintData[0];
+export const getDashboardSummary = (sprintData: SprintData[] = mockSprintData): DashboardSummary => {
+  const allMetrics = getCombinedProductivityMetrics(sprintData);
+  const latestSprint = sprintData[sprintData.length - 1];
+  const firstSprint = sprintData[0];
 
   const developersWithCopilot = latestSprint.developers.filter(
     (d) => d.hasCopilot
@@ -77,8 +77,8 @@ export const getDashboardSummary = (): DashboardSummary => {
 };
 
 // Get velocity trend over time
-export const getVelocityTrend = () => {
-  return mockSprintData.map((sprint) => {
+export const getVelocityTrend = (sprintData: SprintData[] = mockSprintData) => {
+  return sprintData.map((sprint) => {
     const withCopilot = sprint.developers.filter((d) => d.hasCopilot);
     const withoutCopilot = sprint.developers.filter((d) => !d.hasCopilot);
 
@@ -104,8 +104,8 @@ export const getVelocityTrend = () => {
 };
 
 // Get Copilot adoption over time
-export const getCopilotAdoption = () => {
-  return mockSprintData.map((sprint) => ({
+export const getCopilotAdoption = (sprintData: SprintData[] = mockSprintData) => {
+  return sprintData.map((sprint) => ({
     sprint: sprint.sprintName,
     date: sprint.startDate,
     developersWithCopilot: sprint.developers.filter((d) => d.hasCopilot).length,
@@ -118,17 +118,17 @@ export const getCopilotAdoption = () => {
 };
 
 // Get developer comparison
-export const getDeveloperComparison = () => {
-  const developers = new Set(mockSprintData[0].developers.map((d) => d.developer));
+export const getDeveloperComparison = (sprintData: SprintData[] = mockSprintData) => {
+  const developers = new Set(sprintData[0].developers.map((d) => d.developer));
   
   return Array.from(developers).map((devName) => {
     // Get metrics before Copilot (first sprint)
-    const beforeCopilot = mockSprintData[0].developers.find(
+    const beforeCopilot = sprintData[0].developers.find(
       (d) => d.developer === devName
     );
     
     // Get metrics after Copilot (last sprint)
-    const afterCopilot = mockSprintData[mockSprintData.length - 1].developers.find(
+    const afterCopilot = sprintData[sprintData.length - 1].developers.find(
       (d) => d.developer === devName
     );
 

@@ -10,9 +10,11 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { getCopilotAdoption } from '../utils/analytics';
+import { useSprintData } from '../contexts/DataContext';
 
 const CopilotAdoptionChart = () => {
-  const data = getCopilotAdoption();
+  const { sprintData } = useSprintData();
+  const data = getCopilotAdoption(sprintData);
 
   return (
     <div

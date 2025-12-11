@@ -10,9 +10,11 @@ import {
   Cell,
 } from 'recharts';
 import { getDeveloperComparison } from '../utils/analytics';
+import { useSprintData } from '../contexts/DataContext';
 
 const DeveloperComparisonChart = () => {
-  const data = getDeveloperComparison();
+  const { sprintData } = useSprintData();
+  const data = getDeveloperComparison(sprintData);
 
   // Color scale based on improvement
   const getColor = (improvement: number) => {

@@ -116,19 +116,91 @@ copilot-jira-dashboard/
 
 ## 🔧 Customization
 
-### Using Real Data
+### Using Real Jira Data
 
-To integrate with real GitHub Copilot and Jira APIs:
+The dashboard now supports fetching live data from the Jira REST API! Follow these steps to configure it:
+
+#### 1. Generate a Jira API Token
+
+1. Go to [https://id.atlassian.com/manage-profile/security/api-tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+2. Click **Create API token**
+3. Give it a descriptive name (e.g., "Copilot Dashboard")
+4. Copy the generated token (you won't be able to see it again)
+
+#### 2. Find Your Board ID
+
+1. Navigate to your Jira board
+2. Look at the URL: `https://your-domain.atlassian.net/secure/RapidBoard.jspa?rapidView=123`
+3. The number after `rapidView=` is your board ID (e.g., `123`)
+
+#### 3. Configure Environment Variables
+
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` and fill in your details:
+   ```env
+   VITE_USE_LIVE_DATA=true
+   VITE_JIRA_BASE_URL=https://your-domain.atlassian.net
+   VITE_JIRA_EMAIL=your-email@company.com
+   VITE_JIRA_API_TOKEN=your-api-token-here
+   VITE_JIRA_BOARD_ID=123
+   ```
+
+3. (Optional) Set your story points custom field ID:
+   ```env
+   VITE_JIRA_STORY_POINTS_FIELD=customfield_10016
+   ```
+   If not provided, the app will auto-detect it from your board configuration.
+
+#### 4. Restart the Development Server
+
+```bash
+npm run dev
+```
+
+The dashboard will now fetch live data from your Jira instance!
+
+#### Switching Between Mock and Live Data
+
+To switch back to mock data, simply set:
+```env
+VITE_USE_LIVE_DATA=false
+```
+
+#### CORS Handling
+
+The Vite development server is configured with a proxy to handle CORS issues automatically. In production, you may need to:
+- Set up a backend proxy server
+- Use serverless functions (Vercel/Netlify)
+- Configure your Jira instance to allow CORS from your domain
+
+#### Troubleshooting
+
+**"Could not determine story points field"**
+- Manually set `VITE_JIRA_STORY_POINTS_FIELD` in your `.env` file
+- Find the field ID by going to Jira Settings → Issues → Custom fields
+
+**"Jira configuration is incomplete"**
+- Ensure all required environment variables are set
+- Check that your API token is valid
+- Verify your base URL format (should start with `https://`)
+
+**"Failed to fetch live data, falling back to mock data"**
+- Check browser console for detailed error messages
+- Verify your API token has not expired
+- Ensure the board ID is correct
+
+### GitHub Copilot Integration
+
+To also integrate GitHub Copilot metrics:
 
 1. **GitHub Copilot Metrics API**
    - Endpoint: `https://api.github.com/orgs/{org}/copilot/metrics`
    - Documentation: [GitHub Copilot Metrics API](https://docs.github.com/en/rest/copilot/copilot-metrics)
-
-2. **Jira REST API v3**
-   - Base URL: `https://your-domain.atlassian.net/rest/api/3/`
-   - Documentation: [Jira Platform REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/)
-
-Replace the mock data in `src/data/` with API calls to these endpoints.
+   - Note: Currently not implemented in the data provider, uses mock data
 
 ### Mock Data
 
@@ -162,3 +234,24 @@ This project is open source and available under the MIT License.
 
 - [GitHub Copilot Metrics API](https://docs.github.com/en/rest/copilot/copilot-metrics?apiVersion=2022-11-28)
 - [Jira Platform REST API v3](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/)
+- [Jira Software (Agile) REST API](https://developer.atlassian.com/cloud/jira/software/rest/intro/)
+- [Jira API Token Authentication](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)
+
+## 🏗️ Architecture
+
+### Service Layer
+
+The application includes a service layer for live Jira integration:
+
+- **`src/types/jiraApi.ts`** - TypeScript types for Jira API responses
+- **`src/services/jiraClient.ts`** - HTTP client with authentication and caching
+- **`src/services/jiraTransformers.ts`** - Transforms Jira data to app types
+- **`src/services/dataProvider.ts`** - Abstraction layer for mock/live data switching
+
+### Caching Strategy
+
+To optimize API usage and improve performance:
+- Sprint data cached for **5 minutes**
+- Board configuration cached for **1 hour**
+- Field metadata cached for **1 hour**
+- Cache can be cleared manually via `clearCache()` function

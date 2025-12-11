@@ -5,10 +5,24 @@ import CopilotAdoptionChart from './components/CopilotAdoptionChart';
 import CopilotMetricsChart from './components/CopilotMetricsChart';
 import DeveloperTable from './components/DeveloperTable';
 import { getDashboardSummary } from './utils/analytics';
+import { useSprintData } from './contexts/DataContext';
 import './App.css';
 
 function App() {
-  const summary = getDashboardSummary();
+  const { sprintData, isLoading, error, isLiveData } = useSprintData();
+  const summary = getDashboardSummary(sprintData);
+
+  if (isLoading) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⏳</div>
+          <h2 style={{ color: '#667eea', fontSize: '24px', margin: '0 0 8px 0' }}>Loading Dashboard Data...</h2>
+          <p style={{ color: '#6b7280', margin: 0 }}>Fetching sprint metrics from {isLiveData ? 'Jira' : 'mock data'}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
@@ -27,9 +41,29 @@ function App() {
           </h1>
           <p style={{ margin: 0, fontSize: '16px', opacity: 0.9 }}>
             GitHub Copilot Impact Analysis & Jira Sprint Metrics
+            {isLiveData && ' • Live Data from Jira'}
+            {!isLiveData && ' • Mock Data (Demo Mode)'}
           </p>
         </div>
       </header>
+
+      {/* Error Banner */}
+      {error && (
+        <div style={{ 
+          backgroundColor: '#fef2f2', 
+          borderLeft: '4px solid #ef4444',
+          padding: '16px 24px',
+          margin: '16px auto',
+          maxWidth: '1400px'
+        }}>
+          <div style={{ color: '#991b1b', fontWeight: 600, marginBottom: '4px' }}>
+            ⚠️ Data Loading Error
+          </div>
+          <div style={{ color: '#7f1d1d', fontSize: '14px' }}>
+            {error} - Displaying mock data as fallback.
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '32px 24px' }}>
@@ -144,8 +178,8 @@ function App() {
         {/* Footer */}
         <footer style={{ marginTop: '48px', textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>
           <p>
-            Data sources: GitHub Copilot Metrics API & Jira REST API v3 | Mock data for
-            demonstration purposes
+            Data sources: GitHub Copilot Metrics API & Jira REST API v3
+            {isLiveData ? ' | Live data from Jira' : ' | Mock data for demonstration purposes'}
           </p>
           <p style={{ marginTop: '8px' }}>
             Built with React, TypeScript, Vite & Recharts
