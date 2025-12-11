@@ -28,6 +28,11 @@ function mapStatus(jiraStatus: string): 'To Do' | 'In Progress' | 'Done' {
  * Extract story points from issue fields
  */
 function extractStoryPoints(issue: JiraApiIssue, storyPointsField: string): number {
+  // Check if field exists
+  if (!(storyPointsField in issue.fields)) {
+    return 0;
+  }
+  
   const value = issue.fields[storyPointsField];
   
   if (typeof value === 'number') {

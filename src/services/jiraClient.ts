@@ -68,6 +68,7 @@ export function clearCache(keyPattern?: string): void {
 
 /**
  * Create authorization header for Jira API
+ * Note: btoa is used for base64 encoding in browser environment
  */
 function getAuthHeader(config: JiraApiConfig): string {
   const credentials = `${config.email}:${config.apiToken}`;
@@ -113,9 +114,9 @@ async function makeRequest<T>(
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
+    // Don't expose full error details to avoid leaking sensitive information
     throw new Error(
-      `Jira API request failed: ${response.status} ${response.statusText}\n${errorText}`
+      `Jira API request failed: ${response.status} ${response.statusText}`
     );
   }
 
