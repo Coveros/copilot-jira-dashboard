@@ -31,12 +31,24 @@ The application uses **mock data** to demonstrate how these metrics can be combi
 
 ## 📦 Quick Start
 
-### Prerequisites
+### 🌐 GitHub Codespaces (Recommended)
+
+The fastest way to get started is with GitHub Codespaces:
+
+1. Click the **Code** button above
+2. Select **Codespaces** tab
+3. Click **Create codespace**
+
+The devcontainer will automatically set up everything you need, including Node.js, dependencies, and VS Code extensions. See [QUICKSTART.md](./QUICKSTART.md) for details on using VS Code tasks.
+
+### 💻 Local Development
+
+#### Prerequisites
 
 - Node.js (v18 or higher)
 - npm or yarn
 
-### Installation
+#### Installation
 
 1. **Clone the repository**
    ```bash
