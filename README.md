@@ -2,6 +2,8 @@
 
 An interactive dashboard that demonstrates developer productivity improvements by combining **GitHub Copilot metrics** with **Jira story point data**. This application visualizes the correlation between Copilot adoption and increased developer velocity.
 
+This is an example of how you can calculate these metrics. Each team and company are different so your specific use case and KPIs may be different.
+
 ![React](https://img.shields.io/badge/React-19.2-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue) ![Vite](https://img.shields.io/badge/Vite-7.2-purple)
 
 ## 📊 Overview
